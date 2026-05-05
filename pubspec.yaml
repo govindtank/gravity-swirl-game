@@ -34,7 +34,7 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  flame: ^1.10.0
+  # flame: ^1.10.0  # Removed - using pure Flutter Canvas instead
   # Optional physics package (e.g., particles): 
   # flutter_particles: ^x.y.z # Placeholder for a dedicated particle system library
 
