@@ -121,11 +121,11 @@ class GravitySwirlGameEngine extends ChangeNotifier {
   final Random _random = Random();
   List<Offset> pathPoints = [];
   
-  void startGame() {
-    loadLevel(1);
+  void startGame({double sizeX = 800, double sizeY = 600}) {
+    loadLevel(1, sizeX: sizeX, sizeY: sizeY);
   }
   
-  void loadLevel(int level) {
+  void loadLevel(int level, {double sizeX = 800, double sizeY = 600}) {
     state = GameState();
     state.currentLevel = level;
     
@@ -258,7 +258,7 @@ class GravitySwirlGameEngine extends ChangeNotifier {
     // Check win condition
     if (state.goals.every((g) => g.collected)) {
       Future.delayed(const Duration(seconds: 1), () {
-        loadLevel(state.currentLevel + 1);
+        loadLevel(state.currentLevel + 1, sizeX: gameSize.width, sizeY: gameSize.height);
       });
     }
     
@@ -298,7 +298,7 @@ class _GameCanvasState extends State<GameCanvas> with SingleTickerProviderStateM
   void initState() {
     super.initState();
     _game = GravitySwirlGameEngine();
-    _game.startGame();
+    _game.startGame(sizeX: _gameSize.width, sizeY: _gameSize.height);
     
     _controller = AnimationController(
       vsync: this,
@@ -470,7 +470,7 @@ class _GameScreenState extends State<GameScreen> {
   @override
   void initState() {
     super.initState();
-    _game.startGame();
+    _game.startGame(sizeX: MediaQuery.of(context).size.width, sizeY: MediaQuery.of(context).size.height);
   }
   
   @override
