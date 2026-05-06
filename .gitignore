@@ -34,3 +34,7 @@ logs/
 *.pem
 *.key
 *.credentials
+
+
+# Protect git repository
+!/.git
