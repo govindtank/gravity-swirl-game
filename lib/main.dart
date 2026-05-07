@@ -116,6 +116,7 @@ class GameState {
 // GAME ENGINE
 // ========================================================
 
+/// Physics engine with configurable gravity wells and particles
 class GravitySwirlGameEngine extends ChangeNotifier {
   GameState state = GameState();
   final Random _random = Random();

@@ -161,6 +161,63 @@ View the workflow: [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml
 
 ---
 
+## 💡 Usage Examples
+
+### Using Sound Effects
+
+```dart
+import 'package:gravity_swirl_game/sounds/audio_manager.dart';
+
+// Create audio manager singleton
+final audioManager = AudioManager();
+
+// Play sound when particle is collected
+audioManager.play(AudioManager.Effect.particleCollect);
+
+// Toggle mute globally
+audioManager.toggleMute(true);
+```
+
+### Using Settings Screen
+
+```dart
+import 'package:gravity_swirl_game/settings/settings_screen.dart';
+
+// Add to app navigation
+Scaffold(
+  body: Stack(
+    children: [
+      GameCanvas(),
+      Positioned(
+        top: 10,
+        right: 10,
+        child: IconButton(
+          icon: const Icon(Icons.settings),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => SettingsScreen()),
+          ),
+        ),
+      ),
+    ],
+  ),
+);
+```
+
+### Customizing Physics
+
+Modify force magnitudes in `GravitySwirlGameEngine.update()`:
+
+```dart
+// Adjust gravity well attraction strength
+double forceMagnitude = 1.5 / (distance * distance);
+
+// Adjust damping rate
+particle.velocity = particle.velocity * 0.95; // Try: 0.92 for stronger damping
+```
+
+---
+
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
