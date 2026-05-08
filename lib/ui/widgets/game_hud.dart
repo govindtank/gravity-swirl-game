@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../core/constants.dart';
 import '../../core/theme_manager.dart';
 import '../../engine/game_engine.dart';
 import '../../models/game_objects.dart';
@@ -268,6 +269,8 @@ class _PowerupChip extends StatelessWidget {
         return Icons.swap_calls;
       case PowerupType.particleBurst:
         return Icons.auto_awesome;
+      default:
+        return Icons.help;
     }
   }
 }

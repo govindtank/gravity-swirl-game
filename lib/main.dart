@@ -6,6 +6,22 @@ import 'core/storage_service.dart';
 import 'core/theme_manager.dart';
 import 'ui/screens/home_screen.dart';
 
+const defaultTheme = GameTheme(
+  id: 'default',
+  name: 'Default',
+  background: Color(0xFF0A0A2A),
+  surface: Color(0xFF1A1A2E),
+  primary: Color(0xFF6366F1),
+  secondary: Color(0xFF8B5CF6),
+  accent: Color(0xFFF59E0B),
+  particleColor: Colors.white,
+  goalColor: Color(0xFF3B82F6),
+  hazardColor: Color(0xFFEF4444),
+  textPrimary: Colors.white,
+  textSecondary: Color(0xFFB0B0B0),
+  isDark: true,
+);
+
 // ========================================================
 // MAIN ENTRY POINT
 // ========================================================
@@ -19,23 +35,7 @@ void main() async {
     statusBarIconBrightness: Brightness.light,
   ));
 
-  // Initialize storage
-  final storage = StorageService();
-  await storage.init();
-
-  // Initialize theme manager
-  final themeManager = ThemeManager(storage);
-  await themeManager.init();
-
-  runApp(
-    MultiProvider(
-      providers: [
-        Provider<StorageService>.value(value: storage),
-        ChangeNotifierProvider<ThemeManager>.value(value: themeManager),
-      ],
-      child: const GravitySwirlApp(),
-    ),
-  );
+  runApp(const GravitySwirlApp());
 }
 
 class GravitySwirlApp extends StatelessWidget {
@@ -43,12 +43,10 @@ class GravitySwirlApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeManager = context.watch<ThemeManager>();
-
     return MaterialApp(
       title: 'Gravity Swirl',
       debugShowCheckedModeBanner: false,
-      theme: themeManager.currentTheme.toThemeData(),
+      theme: ThemeData.dark(),
       home: const HomeScreen(),
     );
   }

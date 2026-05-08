@@ -268,7 +268,7 @@ class LevelGenerator {
   List<GoalMarker> _generateGoals(int level, Size gameSize) {
     final count = DifficultyScaling.getGoalCount(level);
     final goals = <GoalMarker>[];
-    final margin = 50.0;
+    const margin = 50.0;
 
     for (int i = 0; i < count; i++) {
       goals.add(GoalMarker(
@@ -287,7 +287,7 @@ class LevelGenerator {
   List<Particle> _generateParticles(int level, Size gameSize) {
     final count = DifficultyScaling.getParticleCount(level);
     final particles = <Particle>[];
-    final margin = 30.0;
+    const margin = 30.0;
 
     for (int i = 0; i < count; i++) {
       particles.add(Particle(
@@ -312,7 +312,37 @@ class LevelGenerator {
   Color _getBackgroundColor(int level) {
     // Cycle through color palettes as levels progress
     final hue = (level * 15) % 360;
-    return HSLColor.fromAHSL(1.0, hue.toDouble(), 0.3, 0.08).toColor();
+    final h = hue / 360.0;
+    final s = 0.3;
+    final l = 0.08;
+    final a = 1.0;
+
+    // Simple HSL to RGB conversion
+    final c = (1 - (2 * l - 1).abs()) * s;
+    final x = c * (1 - ((h * 6) % 2 - 1).abs());
+    final m = l - c / 2;
+
+    double r, g, b;
+    if (h < 1/6) {
+      r = c; g = x; b = 0;
+    } else if (h < 2/6) {
+      r = x; g = c; b = 0;
+    } else if (h < 3/6) {
+      r = 0; g = c; b = x;
+    } else if (h < 4/6) {
+      r = 0; g = x; b = c;
+    } else if (h < 5/6) {
+      r = x; g = 0; b = c;
+    } else {
+      r = c; g = 0; b = x;
+    }
+
+    return Color.fromRGBO(
+      ((r + m) * 255).round(),
+      ((g + m) * 255).round(),
+      ((b + m) * 255).round(),
+      a,
+    );
   }
 }
 

@@ -147,7 +147,7 @@ class GamePainter extends CustomPainter {
       ..color = theme.hazardColor.withOpacity(0.1)
       ..strokeWidth = 3;
 
-    final stripeSpacing = 15.0;
+    const stripeSpacing = 15.0;
     final offset = (animationTime * 20) % stripeSpacing;
 
     for (double i = -rect.height; i < rect.width + rect.height; i += stripeSpacing) {
@@ -169,7 +169,7 @@ class GamePainter extends CustomPainter {
           Rect.fromLTWH(field.position.dx, field.position.dy, field.width, field.height);
 
       // Field color based on direction
-      final fieldColor = const Color(0xFF00BFFF);
+      const fieldColor = Color(0xFF00BFFF);
 
       // Fill with gradient
       canvas.drawRect(
@@ -197,8 +197,8 @@ class GamePainter extends CustomPainter {
       ..strokeWidth = 2
       ..strokeCap = StrokeCap.round;
 
-    final spacing = 30.0;
-    final arrowSize = 10.0;
+    const spacing = 30.0;
+    const arrowSize = 10.0;
     final flowOffset = (animationTime * 40) % spacing;
 
     for (double y = rect.top + spacing / 2; y < rect.bottom; y += spacing) {
@@ -212,7 +212,7 @@ class GamePainter extends CustomPainter {
 
           // Arrowhead
           final angle = atan2(direction.dy, direction.dx);
-          final headSize = 4.0;
+          const headSize = 4.0;
           canvas.drawLine(
             endPos,
             endPos +
@@ -337,7 +337,7 @@ class GamePainter extends CustomPainter {
       );
 
       // Trail
-      final trailLength = 8;
+      const trailLength = 8;
       for (int i = 0; i < trailLength; i++) {
         final trailAngle = obj.currentAngle - i * 0.15;
         final trailPos = obj.center +
@@ -504,8 +504,8 @@ class GamePainter extends CustomPainter {
   }
 
   void _drawTeleporterLink(Canvas canvas, Offset from, Offset to) {
-    final dashLength = 10.0;
-    final gapLength = 8.0;
+    const dashLength = 10.0;
+    const gapLength = 8.0;
     final direction = to - from;
     final distance = direction.distance;
     final unitDir = direction / distance;
@@ -536,7 +536,7 @@ class GamePainter extends CustomPainter {
 
       // Crystal shape
       final path = Path();
-      final sides = 6;
+      const sides = 6;
       for (int i = 0; i < sides; i++) {
         final angle = splitter.animationPhase + i * (2 * pi / sides);
         final radius = splitter.radius * (0.9 + 0.1 * (i % 2));

@@ -39,7 +39,7 @@ class GameTheme {
   // Generate Flutter ThemeData from GameTheme
   ThemeData toThemeData() {
     return ThemeData(
-      useMaterial3: true,
+      useMaterial3: false,
       brightness: isDark ? Brightness.dark : Brightness.light,
       colorScheme: ColorScheme(
         brightness: isDark ? Brightness.dark : Brightness.light,

@@ -4,10 +4,12 @@ import 'package:provider/provider.dart';
 import '../../core/storage_service.dart';
 import '../../core/theme_manager.dart';
 import '../../models/player_profile.dart';
+import '../../main.dart';
 import 'game_screen.dart';
 import 'settings_screen.dart';
 import 'achievements_screen.dart';
 import 'leaderboard_screen.dart';
+import 'level_select_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,39 +18,82 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _bgAnimationController;
+class _HomeScreenState extends State<HomeScreen> {
   PlayerProfile? _profile;
 
   @override
   void initState() {
     super.initState();
-    _bgAnimationController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 20),
-    )..repeat();
     _loadProfile();
   }
 
   Future<void> _loadProfile() async {
-    final storage = context.read<StorageService>();
-    final profile = await storage.loadProfile();
-    setState(() => _profile = profile);
+    // final storage = context.read<StorageService>();
+    // final profile = await storage.loadProfile();
+    // setState(() => _profile = profile);
+    // Disabled for simplicity
   }
 
   @override
   void dispose() {
-    _bgAnimationController.dispose();
     super.dispose();
   }
 
+  void _showLevelSelectDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(        backgroundColor: defaultTheme.surface,        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),        content: Container(
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color(0xFF2A2A4E),
+                defaultTheme.background,
+              ],
+            ),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.list_alt, color: defaultTheme.primary, size: 48),
+              const SizedBox(height: 16),
+              Text(
+                'SELECT LEVEL',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Choose a level to start playing.',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.grey),
+              ),
+              const SizedBox(height: 24),
+              ElevatedButton.icon(
+                onPressed: () => Navigator.pop(context),
+                icon: Icon(Icons.play_arrow),
+                label: Text('Start New Game'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: defaultTheme.primary,
+                  foregroundColor: Colors.white,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   void _navigateToGame() {
-    Navigator.of(context).push(
-      PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) {
-          return const GameScreen();
-        },
+    _showLevelSelectDialog();
+  }
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(
             opacity: animation,
@@ -89,23 +134,15 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.watch<ThemeManager>().currentTheme;
+    final theme = defaultTheme;
 
     return Scaffold(
       body: Stack(
         children: [
-          // Animated background
+          // Background
           Positioned.fill(
-            child: AnimatedBuilder(
-              animation: _bgAnimationController,
-              builder: (context, child) {
-                return CustomPaint(
-                  painter: _BackgroundPainter(
-                    theme: theme,
-                    animationValue: _bgAnimationController.value,
-                  ),
-                );
-              },
+            child: Container(
+              color: theme.background,
             ),
           ),
 
@@ -243,22 +280,22 @@ class _HomeScreenState extends State<HomeScreen>
             ),
           ),
 
-          // Theme toggle
-          Positioned(
-            top: 16,
-            right: 16,
-            child: SafeArea(
-              child: IconButton(
-                icon: Icon(
-                  theme.isDark ? Icons.light_mode : Icons.dark_mode,
-                  color: theme.textSecondary,
-                ),
-                onPressed: () {
-                  context.read<ThemeManager>().toggleDarkMode();
-                },
-              ),
-            ),
-          ),
+          // Theme toggle - disabled
+          // Positioned(
+          //   top: 16,
+          //   right: 16,
+          //   child: SafeArea(
+          //     child: IconButton(
+          //       icon: Icon(
+          //         theme.isDark ? Icons.light_mode : Icons.dark_mode,
+          //         color: theme.textSecondary,
+          //       ),
+          //       onPressed: () {
+          //         context.read<ThemeManager>().toggleDarkMode();
+          //       },
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

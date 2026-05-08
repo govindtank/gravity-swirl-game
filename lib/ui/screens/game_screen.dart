@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import '../../core/constants.dart';
 import '../../core/storage_service.dart';
 import '../../core/theme_manager.dart';
+import '../../main.dart';
 import '../../engine/game_engine.dart';
-import '../../models/game_objects.dart';
 import '../painters/game_painter.dart';
 import '../widgets/game_hud.dart';
 
@@ -39,6 +40,16 @@ class _GameScreenState extends State<GameScreen>
     _game.onGameOver = _onGameOver;
     _game.onPowerupCollected = _onPowerupCollected;
     _game.onComboMilestone = _onComboMilestone;
+    
+    // Initialize keyboard shortcuts handler
+    final KeyboardListener? keyboard = context.findAncestorWidgetOfExactType<KeyboardListener>();
+    if (keyboard != null) {
+      keyboard.onKeyEventPressed.listen((event) {
+        if (event is RawKeyEvent) {
+          _handleKeyboardEvent(event);
+        }
+      });
+    }
   }
 
   void _onTick() {
@@ -52,10 +63,15 @@ class _GameScreenState extends State<GameScreen>
 
     // Haptic feedback
     HapticFeedback.mediumImpact();
+
+    // Load next level
+    _game.loadLevel(_game.state.currentLevel + 1, gameSize: _gameSize);
   }
 
   void _onGameOver() {
     _saveProgress();
+    // Navigate back to home
+    Navigator.of(context).pop();
   }
 
   void _onPowerupCollected(PowerupType type) {
@@ -67,11 +83,50 @@ class _GameScreenState extends State<GameScreen>
   }
 
   Future<void> _saveProgress() async {
-    final storage = context.read<StorageService>();
-    await storage.updateHighScore(_game.state.score);
-    await storage.updateHighestLevel(_game.state.currentLevel);
-    await storage.updateLongestCombo(_game.state.combo.longestCombo);
-    await storage.addGoalsCollected(_game.state.goalsCollectedThisLevel);
+    // final storage = context.read<StorageService>();
+    // await storage.updateHighScore(_game.state.score);
+    // await storage.updateHighestLevel(_game.state.currentLevel);
+    // await storage.updateLongestCombo(_game.state.combo.longestCombo);
+    // await storage.addGoalsCollected(_game.state.goalsCollectedThisLevel);
+    // Disabled for simplicity
+  }
+
+  
+  void _handleKeyboardEvent(KeyEvent event) {
+    if (event is RawKeyDownEvent) {
+      switch (event.logicalKey) {
+        case LogicalKey.keyZ:
+          // Undo last path action
+          _game.undoPath();
+          break;
+        case LogicalKey.keyP:
+          // Pause/resume game
+          if (_game.isPaused) {
+            _resumeGame();
+          } else {
+            _pauseGame();
+          }
+          break;
+        case LogicalKey.keyR:
+          // Restart level
+          _restartGame();
+          break;
+        case LogicalKey.escape:
+          // Quit to menu
+          _quitGame();
+          break;
+      }
+    }
+  }
+
+  void undoPath() {
+    if (_game.state.history.isNotEmpty) {
+      final lastAction = _game.state.history.last;
+      if (lastAction is PathAction) {
+        _game.removePath(lastAction);
+      }
+      _game.state.history.removeLast();
+    }
   }
 
   @override
@@ -102,7 +157,7 @@ class _GameScreenState extends State<GameScreen>
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.watch<ThemeManager>().currentTheme;
+    final theme = defaultTheme;
 
     return Scaffold(
       body: LayoutBuilder(
