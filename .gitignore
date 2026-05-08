@@ -1,15 +1,12 @@
-# Flutter
-/.dart_tool/
-/.flutter-plugins
-/.flutter-plugins-dependencies
-/.packages
-/.flutter_export_environment
+# Flutter - exclude build artifacts during development but allow for CI/CD
 .dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.flutter_export_environment
 .packages
 .pub-cache/
 .pub/
-build/
-lib/generated_plugin_registrant.dart
 web/main.dart.js
 web/flutter.js
 
