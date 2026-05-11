@@ -24,6 +24,13 @@ A captivating physics-based puzzle game featuring swirling gravity mechanics. Gu
 - 📱 **Cross-Platform** - Works on Web, iOS, Android, and Desktop
 - ⚡ **Instant Play** - No installation required, play directly in browser
 
+### 🔥 NEW! Build Artifacts (May 2026)
+- ✨ **Enhanced Particle Trails** - Persistent trail effects following particle paths
+- 🎭 **Smooth Level Transitions** - Fade-in/out animations between levels
+- 🎪 **Level Select Screen** - Navigate levels with visual previews
+- ⌨️ **Keyboard Shortcuts** - Enhanced accessibility features
+- 🎨 **Cloud Save Support** - Save progress to remote storage (configurable)
+
 ---
 
 ## 🎯 Gameplay
